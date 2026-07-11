@@ -1,68 +1,63 @@
-# 9M Help Center — Dynamic Edition
+# 9M Help Center Pro V2
 
-This package upgrades the previous static FAQ into a dynamic help center with:
+## Netlify build settings
 
-- Supabase database
-- Netlify Functions API
-- Bangla-first public website
-- English language switch
-- Dynamic categories and FAQ articles
-- Announcement management
-- Service status management
-- Support-link management
-- Search logging and article view statistics
-- Admin login and content-management page
+- Base directory: leave empty
+- Build command: leave empty
+- Publish directory: `.`
+- Functions directory: `netlify/functions`
 
-## 1. Create Supabase project
+## Netlify environment variables
 
-Create a Supabase project, then open SQL Editor and run:
+Add exactly these three variables:
+
+1. `SUPABASE_URL`
+   - Supabase → Data API → API URL
+
+2. `SUPABASE_ANON_KEY`
+   - Supabase → Settings → API Keys → Publishable key
+
+3. `SUPABASE_SERVICE_ROLE_KEY`
+   - Supabase → Settings → API Keys → Secret key
+   - A legacy `service_role` key also works.
+
+Never place the secret key inside HTML or send it publicly.
+
+## Deploy
+
+Connect the GitHub repository to Netlify and deploy.
+
+After deployment, test:
+
+- `/setup-check.html`
+- `/.netlify/functions/health`
+- `/api/public`
+- `/admin.html`
+
+A successful health response looks like:
+
+```json
+{
+  "ok": true,
+  "database": "connected",
+  "article_count": 28
+}
+```
+
+## Supabase database
+
+Run these files once, in order:
 
 1. `supabase/schema.sql`
 2. `supabase/seed.sql`
 
-## 2. Create the administrator
+## Administrator setup
 
-In Supabase:
-
-1. Authentication → Users → Add user.
-2. Copy the new user's UUID.
-3. Run this SQL, replacing the UUID:
+Create a user in Supabase Authentication, copy the user UUID, then run:
 
 ```sql
 insert into public.user_profiles(user_id, role)
 values ('YOUR-USER-UUID', 'admin');
 ```
 
-Available roles:
-
-- `admin`: create, edit and delete
-- `editor`: create and edit; cannot delete
-
-## 3. Deploy to Netlify
-
-Upload this folder to GitHub and connect it to Netlify, or deploy through Netlify CLI.
-
-Add these Netlify environment variables:
-
-- `SUPABASE_URL`
-- `SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-
-Never place the service-role key in HTML.
-
-## 4. Pages
-
-- Public Help Center: `/`
-- Admin: `/admin.html`
-
-## 5. Current support link
-
-The seed data uses:
-
-`https://t.me/VIP_9m068`
-
-After deployment, change it from Admin → Support Channels.
-
-## Important
-
-The website cannot become live-dynamic until a Supabase project and the three Netlify environment variables are connected. The source code, database schema, API and administration interface are already included in this package.
+Admin page: `/admin.html`

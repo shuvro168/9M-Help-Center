@@ -1,0 +1,6 @@
+<!doctype html><meta charset="utf-8"><title>9M Setup Check</title>
+<style>body{font-family:system-ui;background:#062f28;color:white;max-width:850px;margin:40px auto;padding:20px}code{background:#123f36;padding:3px 7px;border-radius:6px}.card{border:1px solid #866f24;border-radius:14px;padding:18px;margin:15px 0;background:#08392f}button{padding:11px 16px;border:0;border-radius:9px;background:#ffd75b;font-weight:800}</style>
+<h1>9M Help Center Setup Check</h1>
+<div class="card"><p>Required Netlify variables:</p><p><code>SUPABASE_URL</code></p><p><code>SUPABASE_ANON_KEY</code> = Supabase Publishable key</p><p><code>SUPABASE_SERVICE_ROLE_KEY</code> = Supabase Secret key or legacy service_role key</p></div>
+<button onclick="check()">Test connection</button><pre id="out" class="card">Not tested yet.</pre>
+<script>async function check(){const o=document.getElementById('out');o.textContent='Checking...';try{const r=await fetch('/.netlify/functions/health');o.textContent=JSON.stringify(await r.json(),null,2)}catch(e){o.textContent=e.message}}</script>

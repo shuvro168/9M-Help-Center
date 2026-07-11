@@ -7,7 +7,7 @@ function env(name) {
 }
 
 function adminClient() {
-  return createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"), {
+  return createClient(env("SUPABASE_URL"), (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || env("SUPABASE_SERVICE_ROLE_KEY")), {
     auth: { persistSession: false, autoRefreshToken: false }
   });
 }
