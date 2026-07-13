@@ -1,63 +1,18 @@
-# 9M Help Center Pro V2
+# 9M Knowledge Center V3 Final
 
-## Netlify build settings
+This package works immediately after deployment using built-in content.
 
-- Base directory: leave empty
-- Build command: leave empty
+To enable live Supabase data:
+1. Run `supabase/schema_v3.sql`
+2. Run `supabase/seed_v3.sql`
+3. Copy Supabase Publishable key
+4. Replace `PASTE_YOUR_PUBLISHABLE_KEY_HERE` in `config.js`
+
+No Secret key, service-role key, Netlify Functions, build command, or environment variables are required.
+
+Netlify:
+- Base directory: empty
+- Build command: empty
 - Publish directory: `.`
-- Functions directory: `netlify/functions`
 
-## Netlify environment variables
-
-Add exactly these three variables:
-
-1. `SUPABASE_URL`
-   - Supabase → Data API → API URL
-
-2. `SUPABASE_ANON_KEY`
-   - Supabase → Settings → API Keys → Publishable key
-
-3. `SUPABASE_SERVICE_ROLE_KEY`
-   - Supabase → Settings → API Keys → Secret key
-   - A legacy `service_role` key also works.
-
-Never place the secret key inside HTML or send it publicly.
-
-## Deploy
-
-Connect the GitHub repository to Netlify and deploy.
-
-After deployment, test:
-
-- `/setup-check.html`
-- `/.netlify/functions/health`
-- `/api/public`
-- `/admin.html`
-
-A successful health response looks like:
-
-```json
-{
-  "ok": true,
-  "database": "connected",
-  "article_count": 28
-}
-```
-
-## Supabase database
-
-Run these files once, in order:
-
-1. `supabase/schema.sql`
-2. `supabase/seed.sql`
-
-## Administrator setup
-
-Create a user in Supabase Authentication, copy the user UUID, then run:
-
-```sql
-insert into public.user_profiles(user_id, role)
-values ('YOUR-USER-UUID', 'admin');
-```
-
-Admin page: `/admin.html`
+The public page continues working with built-in data even before Supabase is connected.
